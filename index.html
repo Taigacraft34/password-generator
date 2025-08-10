@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Password Generator</title>
+</head>
+<body>
+    <div class="centre">
+        <h1>Générateur de mots de passe aléatoires</h1>
+        <input id="password" type="text">
+        <button id="copybutton" onclick="copyPassword(passwordTxt.value)">Copier</button>
+        <p>Le mot de passe doit contenir :</p>
+        <div class="checkboxes">
+            <input type="checkbox" id="chiffres" name="chiffres">
+            <label for="chiffres">Chiffres</label>
+            <input type="checkbox" id="special">
+            <label for="special">Caractères spéciaux</label>
+        </div>
+        <form>
+            <input type="number" id="nb" value="12" min="2" max="30">
+            <label for="nb">Nombre de Caractères</label><br>
+        </form>
+        <button id="generate">Générer mot de passe</button>
+    </div>
+    <script>
+        const minus = "abcdefghijklmnopqrstuvwxyz";
+        const majus = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numbers = "0123456789";
+        const symbols = "!@#$%^&*_-+=";
+
+        const passwordTxt = document.getElementById("password")
+        const longueur = document.getElementById("nb")
+        const chiffres = document.getElementById("chiffres")
+        const special = document.getElementById("special")
+        const button = document.getElementById("generate")
+
+        if (passwordTxt.value.trim() === ""){
+            passwordTxt.value = generatePassword();
+        }
+
+        button.addEventListener("click", () => {
+            passwordTxt.value = generatePassword();
+        });
+
+        function generatePassword(){
+            let chars = minus + majus;
+            let password = '';
+            if (chiffres.checked){
+                chars = chars + numbers;
+            }
+            if (special.checked){
+                chars = chars + symbols;
+            }
+            for(let i = 0; i < longueur.value; i++){
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            return password;
+        }
+
+        function copyPassword(password){
+            navigator.clipboard.writeText(password)
+            alert("Mot de passe copié dans le presse-papier.")
+        }
+    </script>
+</body>
+
+<style>
+    body {
+        background-color: rgb(9, 99, 160);
+    }
+
+    #generate,
+    #copybutton,
+    #password {
+        display: flex;
+        border: 1px solid #D3D8DB;
+        text-align: center;
+        width: 133px;
+        height: 29px;
+        border-radius: 12px;
+        align-items: center;
+    }
+
+    .centre input,
+    .centre password{
+        width: auto;
+        margin: 0 auto;
+    }
+    .centre {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+        gap: 10px
+    }
+
+    .checkboxes {
+    display: flex;
+    gap: 10px;          /* espace entre les éléments */
+    align-items: center; /* aligne verticalement checkbox et label */
+    }
+    .checkboxes label {
+        margin-right: 15px; /* espace après chaque label */
+    }
+
+</style>
+
+</html>
